@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuding.spring.chatList.ChatListDao">
+
+	<resultMap id="chatListResult" type="com.tuding.spring.chatList.ChatList">
+		<result column="roomname" property="roomname" />
+		<result column="member_id" property="member_id" />
+		<result column="chief" property="chief" />
+	</resultMap>
+	
+	<select id="selectByRoomname" parameterType="String" 
+			resultMap="chatListResult">
+		select * from chatlist where member_id=#{member_id}
+	</select>
+	
+</mapper>

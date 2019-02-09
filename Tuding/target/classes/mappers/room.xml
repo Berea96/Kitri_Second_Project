@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuding.spring.room.RoomDao">
+
+	<resultMap id="roomResult" type="com.tuding.spring.room.Room">
+		<result column="roomname" property="roomname" />
+		<result column="roompass" property="roompass" />
+		<result column="userid" property="userid" />
+		<result column="indata" property="indata" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.tuding.spring.room.Room">
+		insert into room values(#{roomname}, #{roompass}, #{userid},
+								sysdate)
+	</insert>
+	
+	<select id="selectByMember" parameterType="String" 
+			resultMap="roomResult">
+		select * from room where userid=#{userid}
+	</select>
+	
+	<update id="update" parameterType="com.tuding.spring.room.Room">
+		update room set roompass=#{roompass} where roomname=#{roomname}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete room where roomname=#{roomname}
+	</delete>
+
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuding.spring.member.MemberDao">
+
+	<resultMap id="memberResult" type="com.tuding.spring.member.Member">
+		<result column="id" property="id" />
+		<result column="pwd" property="pwd" />
+		<result column="temp_pw" property="temp_pw" />
+		<result column="email" property="email" />
+		<result column="checked" property="checked" />
+		<result column="w_date" property="w_date" />
+		<result column="nickname" property="nickname" />
+	</resultMap>
+	
+	<!-- <insert id="insert" parameterType="com.tuding.spring.member.Member">
+		insert into member values(#{id}, #{pwd}, #{temp_pw}, #{email},
+								#{checked}, sysdate, #{nickname})
+	</insert>
+	
+	<select id="select" parameterType="String" resultMap="memberResult">
+		select * from member where id=#{id}
+	</select>
+	
+	<update id="update" parameterType="com.tuding.spring.member.Member">
+		update member set pwd=#{pwd} where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete member where id=#{id}
+	</delete> -->
+	
+	<insert id="insert" parameterType="com.tuding.spring.member.Member">
+		insert into member values(#{id}, #{pwd}, #{temp_pw}, #{email},
+								#{checked}, now(), #{nickname})
+	</insert>
+	
+	<select id="select" parameterType="String" resultMap="memberResult">
+		select * from member where id=#{id}
+	</select>
+	
+	<update id="update" parameterType="com.tuding.spring.member.Member">
+		update member set pwd=#{pwd} where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete frop member where id=#{id}
+	</delete>
+
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuding.spring.board.BoardDao">
+
+	<resultMap id="boardResult" type="com.tuding.spring.board.Board">
+		<result column="writer" property="writer" />
+		<result column="num" property="num" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="w_date" property="w_date" />
+		<result column="file" property="file" />
+		<result column="readcount" property="readcount" />
+		<result column="likecount" property="likecount" />
+		<result column="category" property="category" />
+		<result column="roomname" property="roomname" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.tuding.spring.board.Board">
+		insert into board(writer, title, content, w_date, w_file, readcount, 
+						  likecount, category, roomname)
+		values(#{writer}, #{title}, #{content}, now(),
+			   #{file}, 0, 0,
+			   #{category}, #{roomname})
+	</insert>
+	
+	<select id="selectByNum" parameterType="int" resultMap="boardResult">
+		select * from board where num=#{num}
+	</select>
+	
+	<update id="updateRead" parameterType="int">
+		update board set readcount=readcount+1 where num=#{num}
+	</update>
+	
+	<select id="selectByWriter" parameterType="String" resultMap="boardResult">
+		select * from board where roomname=#{roomname} writer=#{writer}
+	</select>
+	
+	<select id="selectByCategory" parameterType="String" resultMap="boardResult">
+		select * from board where roomname=#{roomname} category=#{category}
+	</select>
+	
+	<select id="selectAll" parameterType="hashmap" resultMap="boardResult">
+		select * from board where roomname=#{param1.roomname} order by num desc
+		limit #{param2.start}, #{param2.end}
+	</select>
+	
+	<select id="selectListCount" parameterType="String" resultType="int">
+		select count(*) from board where roomname=#{roomname};
+	</select>
+	
+	<update id="updateLike" parameterType="int">
+		update board set likecount=likecount+#{count} where num=#{num}
+	</update>
+	
+	<update id="update" parameterType="com.tuding.spring.board.Board">
+		update board set content=#{content}, w_date=now() 
+		where num=#{num}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from board where num=#{num}
+	</delete>
+
+</mapper>

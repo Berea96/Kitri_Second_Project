@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuding.spring.liked.LikedDao">
+
+	<resultMap id="likedResult" type="com.tuding.spring.liked.Liked">
+		<result column="num" property="num" />
+		<result column="id" property="id" />
+		<result column="board_num" property="board_num" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.tuding.spring.liked.Liked">
+		insert into liked values(seq_liked_num, #{id}, #{board_num})
+	</insert>
+	
+	<select id="selectByBoardNum" 
+			parameterType="com.tuding.spring.liked.Liked" 
+			resultMap="likedResult">
+		select * from liked where id=#{id} and board_num=#{board_num}
+	</select>
+	
+	<select id="selectByMember" parameterType="String" 
+			resultMap="likedResult">
+		select * from liked where id=#{id}
+	</select>
+	
+	<delete id="delete" parameterType="com.tuding.spring.liked.Liked">
+		delete liked where id=#{id} and board_num=#{board_num}
+	</delete>
+
+
+</mapper>

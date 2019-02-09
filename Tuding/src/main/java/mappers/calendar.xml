@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuding.spring.calendar.CalendarDao">
+
+	<resultMap id="calendarResult" type="com.tuding.spring.calendar.Calendar">
+		<result column="calnum" property="calnum" />
+		<result column="roomname" property="roomname" />
+		<result column="member_id" property="member_id" />
+		<result column="caldate1" property="caldate1" />
+		<result column="caldate2" property="caldate2" />
+		<result column="calevent" property="calevent" />
+		<result column="calcode" property="calcode" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.tuding.spring.calendar.Calendar">
+		insert into calendar(roomname, member_id, caldate1, caldate2, 
+							 calevent, calcode) 
+		value(#{roomname}, #{member_id}, #{caldate1}, #{caldate2}, 
+			   #{calevent}, 2)
+	</insert>
+	
+	<select id="selectAll" parameterType="String" 
+			resultMap="calendarResult">
+		select calnum, caldate1, caldate2, calevent, member_id
+		from calendar where roomname=#{roomname}
+	</select>
+	
+	<update id="update" parameterType="com.tuding.spring.calendar.Calendar">
+		update calendar set calevent=#{calevent}, caldate1=#{caldate1}, 
+							caldate2=#{caldate2}  
+							where calnum=#{calnum}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from calendar where calnum=#{calnum}
+	</delete>
+
+</mapper>
