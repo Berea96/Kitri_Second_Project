@@ -30,6 +30,12 @@
 > Tomcat측에서는 초기 메인 화면과 게시판 기능등을 담당하였습니다.
 * * *
 >3. 사용된 기술  
+>사용한 것들은 크게
 >NodeJS  
+>Express  
+>Socke.io  
 >Spring  
 >Mysql  
+>MyBatis  
+>들을 사용하였습니다.  
+* * *
