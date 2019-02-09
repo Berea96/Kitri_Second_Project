@@ -116,6 +116,29 @@ public class MemberController {
 		return "redirect:/member/info";
 	}
 	
+	@RequestMapping("/findPass")
+	public String findPassMember(Member m) {
+		
+		String result = "";
+		String tempPass = new TempPass().getTempPass();
+		
+		Member getMember = service.getMember(m.getId());
+		if(getMember != null) {
+			m.setPwd(tempPass);
+			service.editMember(m);
+			String host = "http://127.0.0.1:80/InfantCareCenter/";
+			String from = "balrog960712@gmail.com";
+			String to = getMember.getEmail(); // 유저의 가입 이메일 가져오기.
+			
+			result = "{'result':'success'}";
+		}
+		else {
+			result = "{'result':'fail'}";
+		}
+		
+		return result;
+	}
+	
 	@RequestMapping("/logout")
 	public String logoutMember(HttpServletRequest req) {
 		

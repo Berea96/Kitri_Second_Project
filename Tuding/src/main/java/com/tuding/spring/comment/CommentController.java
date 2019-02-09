@@ -17,9 +17,12 @@ public class CommentController {
 	@Resource(name="commentService")
 	private CommentService service;
 	
+	@ResponseBody
 	@RequestMapping("/write")
-	public void writeComment() {
+	public String writeComment(Comment c) {
+		service.writeComment(c);
 		
+		return "";
 	}
 	
 	@RequestMapping("/listByBoardNum")

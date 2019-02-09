@@ -12,7 +12,7 @@
 		color: red;
 	}
 	.commentForm {
-		width: 200px;
+		width: 350px;
 		heigth: 100px;
 	}
 	.commentForm > div {
@@ -25,6 +25,7 @@
 	.commentForm > div:first-child {
 	}
 	.commentForm > div:nth-child(2) {
+		width: 200px;
 	}
 	.commentForm > div:nth-child(3) {
 		width: 100px;
@@ -94,6 +95,8 @@
 					$("#boardListDiv").css("display", "none");
 					$("#boardWriteDiv").css("display", "none");
 					$("#boardDetailViewDiv").css("display", "block");
+					$("#commentWriteForm").css("display", "block");
+					$("#commentList").css("display", "block");
 					$("#editButton").remove();
 					$("#delButton").remove();
 					$("#detailBoardNum").html(result.num);
@@ -104,6 +107,8 @@
 					$("#detailReadCount").html(result.readcount);
 					$("#detailCategory").html(result.category);
 					$("#detailContent").html(result.content);
+					$("#commentWriter").val('${sessionScope.loginInfo.id}');					
+					$("#commentWriteNum").val(result.num);					
 					if('${sessionScope.loginInfo.id}' == result.writer) {
 						$("#boardDetailViewDiv").append("<button id='editButton' val='" + result.num + "' class='btn btn-primary'>수정</button>");
 						$("#boardDetailViewDiv").append("<button id='delButton' val='" + result.num + "' class='btn btn-primary'>삭제</button>");
@@ -156,16 +161,18 @@
 						success: (data) => {
 							var result = JSON.parse(data);
 							
-							var str = "<div class='commentForm'>";
+							var str = "";
 							
+							$("#commentList").empty();
 							$.each(result, (index, item) => {
+								str += "<div class='commentForm'>";
 								str += "<div>" + item.num + "</div>";
-								str += "<div>" + item.writer + "</div>";
-								str += "<div>" + item.w_date + "</div>";
 								str += "<div>" + item.content + "</div>";
+								str += "<div>" + item.w_date + "</div>";
+								str += "<div>" + item.writer + "</div>";
+								str += "</div>";
 							});
 							
-							str += "</div>";
 							
 							$("#commentList").append(str);
 						}
@@ -358,11 +365,15 @@
 			$("#boardListDiv").css("display", "none");
 			$("#boardWriteDiv").css("display", "block");
 			$("#boardDetailViewDiv").css("display", "none");
+			$("#commentList").css("display", "none");
+			$("#commentWriteForm").css("display", "none");
 		});
 		$("#boardListButton, #backToList").click(() => {
 			$("#boardListDiv").css("display", "block");
 			$("#boardWriteDiv").css("display", "none");
 			$("#boardDetailViewDiv").css("display", "none");
+			$("#commentList").css("display", "none");
+			$("#commentWriteForm").css("display", "none");
 		});
 		$("#writeButton").click(() => {
 			var title = $("#writeTitle").val();
@@ -375,7 +386,54 @@
 				$("#writeForm").submit();
 			}
 		});
-	})
+		$("#commentWriteButton").click(() => {
+			var num = $("#commentWriteNum").val();
+			var writer = $("#commentWriter").val();
+			var content = $("#commentContent").val();
+			
+			if(content == '') {
+				alert("빈칸없이");
+			}
+			else {
+					$.ajax({
+						type: "GET",
+						url: "${pageContext.request.contextPath}/comment/write",
+						data: {
+							"board_num": num,
+							"writer": writer,
+							"content": content
+						},
+						success: (data) => {
+							$.ajax({
+								type: "GET",
+								url: "${pageContext.request.contextPath}/comment/listByBoardNum",
+								data: {
+									"num" : num
+								},
+								success: (data) => {
+									var result = JSON.parse(data);
+									
+									var str = "";
+									
+									$("#commentList").empty();
+									$.each(result, (index, item) => {
+										str += "<div class='commentForm'>";
+										str += "<div>" + item.num + "</div>";
+										str += "<div>" + item.content + "</div>";
+										str += "<div>" + item.w_date + "</div>";
+										str += "<div>" + item.writer + "</div>";
+									str += "</div>";
+									});
+									
+									
+									$("#commentList").append(str);
+								}
+							});
+						}
+					})
+			}
+		});
+	});
 </script>
 </head>
 <body>	
@@ -513,15 +571,17 @@
 			</tr>
     	</table>
     	<h4>댓글</h4>
-    	<form id="commentForm" action="" method="GET">
-    		<input type="hidden" name="board_num">
-    		<input type="hidden" name="writer">
-    		<input type="text" name="content">
-    		<input id="commentWriteButton" type="button" value="작성">
-    	</form>
-		<div id="commentList">
-				
-		</div>
+    	
     </div>
+		<div id="commentWriteForm" style="display:none;">
+			<form id="commentForm" action="" method="GET">
+	    		<input type="hidden" id="commentWriteNum" name="board_num">
+	    		<input type="hidden" id="commentWriter" name="writer">
+	    		<input type="text" id="commentContent" name="content">
+	    		<input id="commentWriteButton" type="button" value="작성">
+	    	</form>
+		</div>
+		<div id="commentList" style="display:none;">
+		</div>
 </body>
 </html>
