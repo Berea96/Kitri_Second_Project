@@ -22,7 +22,7 @@ public class CommentController {
 	public String writeComment(Comment c) {
 		service.writeComment(c);
 		
-		return "";
+		return "{'result':'success'}";
 	}
 	
 	@RequestMapping("/listByBoardNum")
@@ -55,7 +55,7 @@ public class CommentController {
 		
 		service.editComment(c);
 		
-		return "";
+		return "{'result':'success'}";
 	}
 	
 	@ResponseBody
@@ -63,6 +63,6 @@ public class CommentController {
 	public String delCommnet(@RequestParam("num")int num) {
 		service.delComment(num);
 		
-		return "";
+		return "{'result':'success'}";
 	}
 }

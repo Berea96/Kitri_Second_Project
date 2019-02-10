@@ -22,7 +22,7 @@ public class LikedController {
 		
 		service.addLiked(l);
 		
-		return "";
+		return "{'result':'success'}";
 	}
 	
 	@RequestMapping("/likeBoardNum")
@@ -40,6 +40,6 @@ public class LikedController {
 	public String delLiked(Liked l) {
 		service.delLiked(l);
 		
-		return "";
+		return "{'result':'success'}";
 	}
 }

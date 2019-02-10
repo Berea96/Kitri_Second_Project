@@ -12,7 +12,7 @@
 		color: red;
 	}
 	.commentForm {
-		width: 350px;
+		width: 400px;
 		heigth: 100px;
 	}
 	.commentForm > div {
@@ -31,9 +31,16 @@
 		width: 100px;
 		height: 25px;
 	}
-	
-	.commentForm > div:last-child {
+	.commentForm > div:nth-child(4) {
 		width: 100px;
+		height: 25px;
+	}
+	.commentForm > div:nth-child(5) {
+		width: 50px;
+		height: 25px;
+	}
+	.commentForm > div:nth-child(5) > button {
+		width: 50px;
 		height: 25px;
 	}
 </style>
@@ -152,31 +159,7 @@
 						});
 					});
 					
-					$.ajax({
-						type: "GET",
-						url: "${pageContext.request.contextPath}/comment/listByBoardNum",
-						data: {
-							"num" : result.num
-						},
-						success: (data) => {
-							var result = JSON.parse(data);
-							
-							var str = "";
-							
-							$("#commentList").empty();
-							$.each(result, (index, item) => {
-								str += "<div class='commentForm'>";
-								str += "<div>" + item.num + "</div>";
-								str += "<div>" + item.content + "</div>";
-								str += "<div>" + item.w_date + "</div>";
-								str += "<div>" + item.writer + "</div>";
-								str += "</div>";
-							});
-							
-							
-							$("#commentList").append(str);
-						}
-					});
+					$.showCommentList(result.num);
 				}
 			});
 		});
@@ -336,6 +319,36 @@
 		}
 	}
 	
+	$.showCommentList = function(num) {
+		$.ajax({
+			type: "GET",
+			url: "${pageContext.request.contextPath}/comment/listByBoardNum",
+			data: {
+				"num" : num
+			},
+			success: (data) => {
+				var result = JSON.parse(data);
+				
+				var str = "";
+				
+				$("#commentList").empty();
+				$.each(result, (index, item) => {
+					str += "<div class='commentForm'>";
+					str += "<div>" + item.num + "</div>";
+					str += "<div>" + item.content + "</div>";
+					str += "<div>" + item.w_date + "</div>";
+					str += "<div>" + item.writer + "</div>";
+					if(item.writer == '${sessionScope.loginInfo.id}'){
+						str += "<div><button class='commentDelButton'>삭제</button></div>";
+					}
+				str += "</div>";
+				});
+				
+				$("#commentList").append(str);
+			}
+		});
+	}
+	
 	$(document).ready(() => {
 		$(() => {
 			$.ajax({
@@ -382,7 +395,7 @@
 			if(title == "" || content == "") {
 				alert("빈칸없이");
 			}
-			else {
+			else {g
 				$("#writeForm").submit();
 			}
 		});
@@ -404,31 +417,7 @@
 							"content": content
 						},
 						success: (data) => {
-							$.ajax({
-								type: "GET",
-								url: "${pageContext.request.contextPath}/comment/listByBoardNum",
-								data: {
-									"num" : num
-								},
-								success: (data) => {
-									var result = JSON.parse(data);
-									
-									var str = "";
-									
-									$("#commentList").empty();
-									$.each(result, (index, item) => {
-										str += "<div class='commentForm'>";
-										str += "<div>" + item.num + "</div>";
-										str += "<div>" + item.content + "</div>";
-										str += "<div>" + item.w_date + "</div>";
-										str += "<div>" + item.writer + "</div>";
-									str += "</div>";
-									});
-									
-									
-									$("#commentList").append(str);
-								}
-							});
+							$.showCommentList(num);
 						}
 					})
 			}

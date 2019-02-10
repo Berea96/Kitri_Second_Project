@@ -143,7 +143,7 @@ public class BoardController {
 
 		service.editBoard(b);
 		
-		return "";
+		return "{'result':'success'}";
 	}
 
 	//board delete Method
@@ -153,6 +153,6 @@ public class BoardController {
 		
 		service.delBoard(num);
 
-		return "";
+		return "{'result':'success'}";
 	}
 }
