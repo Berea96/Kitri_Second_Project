@@ -96,7 +96,7 @@ public class MemberController {
 			result = "{'result':'fail'}";
 		}
 		else {
-			if(member.getPwd().equals(pw)) {
+			if(member.getPwd().equals(pw) || member.getTemp_pw().equals(pw)) {
 				if(member.getChecked() == 0) {
 					result = "{'result':'unChecked'}";
 				}
@@ -128,23 +128,22 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/findPass")
-	public String findPassMember(Member m) {
+	public String findPassMember(Member m, Model model) {
 		
 		String result = "";
 		String tempPass = new TempPass().getTempPass();
 		
 		Member getMember = service.getMember(m.getId());
 		if(getMember != null) {
-			m.setPwd(tempPass);
-			service.editMember(m);
-			String host = "http://127.0.0.1:80/InfantCareCenter/";
-			String from = "balrog960712@gmail.com";
-			String to = getMember.getEmail(); // 유저의 가입 이메일 가져오기.
+			m.setTemp_pw(tempPass);
+			service.editTempPass(m);
 			
-			result = "{'result':'success'}";
+			model.addAttribute("member", getMember);
+			
+			result = "mail/findPassMailSendForm";
 		}
 		else {
-			result = "{'result':'fail'}";
+			result = "error";
 		}
 		
 		return result;

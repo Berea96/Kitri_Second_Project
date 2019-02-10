@@ -8,5 +8,6 @@ public interface MemberDao {
 	ArrayList<Member> selectAll();
 	void update(Member m);
 	void updateChecked(String id);
+	void updateTempPass(Member m);
 	void delete(String id);
 }

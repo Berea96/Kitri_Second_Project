@@ -45,6 +45,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
+	public void editTempPass(Member m) {
+		dao = sqlSession.getMapper(MemberDao.class);
+		dao.updateTempPass(m);
+	}
+
+	@Override
 	public void delMember(String id) {
 		dao = sqlSession.getMapper(MemberDao.class);
 		dao.delete(id);

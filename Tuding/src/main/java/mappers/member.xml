@@ -44,13 +44,16 @@
 		select email, id from member
 	</select>
 	
-	
 	<update id="update" parameterType="com.tuding.spring.member.Member">
 		update member set pwd=#{pwd} where id=#{id}
 	</update>
 	
 	<update id="updateChecked" parameterType="String">
 		update member set checked=1 where id=#{id}
+	</update>
+	
+	<update id="updateTempPass" parameterType="com.tuding.spring.member.Member">
+		update member set temp_pw=#{temp_pw} where id=#{id}
 	</update>
 	
 	<delete id="delete" parameterType="String">

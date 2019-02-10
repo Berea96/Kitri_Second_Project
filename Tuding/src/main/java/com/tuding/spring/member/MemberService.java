@@ -8,5 +8,6 @@ public interface MemberService {
 	ArrayList<Member> getAll();
 	void editMember(Member m);
 	void checkedEmail(String id);
+	void editTempPass(Member m);
 	void delMember(String id);
 }

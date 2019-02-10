@@ -313,7 +313,7 @@ footer {
 		</div>
 	</div>
 
-	<form action="memberFindPass.do" method="post">
+	<form action="${pageContext.request.contextPath}/member/findPass" method="post">
 		<div class="modal" id="MissingForm">
 			<div class="modal-dialog  modal-lg">
 				<div class="modal-content">
@@ -323,7 +323,7 @@ footer {
 					</div>
 					<div class="modal-body">
 						현재 아이디를 입력하시면, 가입 정보에 기입된 이메일로 안내 메일을 발송해 드립니다. <input
-							class="form-control" type="text" name="memberID"
+							class="form-control" type="text" name="id"
 							placeholder="아이디를 입력해주세요.">
 					</div>
 					<div class="modal-footer">
