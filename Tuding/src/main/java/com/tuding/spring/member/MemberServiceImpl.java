@@ -1,5 +1,7 @@
 package com.tuding.spring.member;
 
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
@@ -23,6 +25,12 @@ public class MemberServiceImpl implements MemberService {
 		dao = sqlSession.getMapper(MemberDao.class);
 		return dao.select(id);
 	}
+	
+	@Override
+	public ArrayList<Member> getAll() {
+		dao = sqlSession.getMapper(MemberDao.class);
+		return dao.selectAll();
+	}
 
 	@Override
 	public void editMember(Member m) {
@@ -30,6 +38,12 @@ public class MemberServiceImpl implements MemberService {
 		dao.update(m);
 	}
 
+	@Override
+	public void checkedEmail(String id) {
+		dao = sqlSession.getMapper(MemberDao.class);
+		dao.updateChecked(id);
+	}
+	
 	@Override
 	public void delMember(String id) {
 		dao = sqlSession.getMapper(MemberDao.class);

@@ -40,8 +40,17 @@
 		select * from member where id=#{id}
 	</select>
 	
+	<select id="selectAll" parameterType="String" resultMap="memberResult">
+		select email, id from member
+	</select>
+	
+	
 	<update id="update" parameterType="com.tuding.spring.member.Member">
 		update member set pwd=#{pwd} where id=#{id}
+	</update>
+	
+	<update id="updateChecked" parameterType="String">
+		update member set checked=1 where id=#{id}
 	</update>
 	
 	<delete id="delete" parameterType="String">

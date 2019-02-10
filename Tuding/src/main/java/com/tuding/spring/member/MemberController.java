@@ -1,15 +1,20 @@
 package com.tuding.spring.member;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.tuding.spring.sha256.SHA256;
+import com.tuding.spring.sha256.SHAHash256;
 
 @Controller
 @RequestMapping("/member")
@@ -29,7 +34,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/join")
-	public String joinMember(Member m) {
+	public String joinMember(Member m, Model model) {
 		
 		System.out.println(m.getId());
 		System.out.println(m.getPwd());
@@ -39,7 +44,9 @@ public class MemberController {
 		m.setW_date(null);
 		service.joinMember(m);
 		
-		return "redirect:/member/home";
+		model.addAttribute("member", m);
+		
+		return "mail/mailSendForm";
 	}
 	
 	@RequestMapping("/info")
@@ -90,18 +97,22 @@ public class MemberController {
 		}
 		else {
 			if(member.getPwd().equals(pw)) {
-				
-				session = req.getSession();
-				SHAHash256 hash = new SHAHash256();
-				
-				try {
-					session.setAttribute("hash", hash.sha256(member.getPwd()+member.getEmail()));
-				} catch (NoSuchAlgorithmException e) {
-					e.printStackTrace();
+				if(member.getChecked() == 0) {
+					result = "{'result':'unChecked'}";
 				}
-				
-				session.setAttribute("loginInfo", member);
-				result = "{'result':'success'}";
+				else {
+					session = req.getSession();
+					SHAHash256 hash = new SHAHash256();
+					
+					try {
+						session.setAttribute("hash", hash.sha256(member.getPwd()+member.getEmail()));
+					} catch (NoSuchAlgorithmException e) {
+						e.printStackTrace();
+					}
+					
+					session.setAttribute("loginInfo", member);
+					result = "{'result':'success'}";
+				}
 			}
 			else result = "{'result':'fail'}";
 		}
@@ -137,6 +148,28 @@ public class MemberController {
 		}
 		
 		return result;
+	}
+	
+	@RequestMapping("/mailCheck")
+	public String mailCheckMember(@RequestParam("code")String code,
+								  Model model) {
+		
+		ArrayList<Member> memberList = service.getAll();
+		
+		String id = "";
+		
+		model.addAttribute("result", "fail");
+		for(Member m : memberList) {
+			String mEmail = new SHA256().getSHA256(m.getEmail());
+			
+			if(code.equals(mEmail)) {
+				id = m.getId();
+				service.checkedEmail(id);
+				model.addAttribute("result", "success");
+			}
+		}
+		
+		return "mail/result";
 	}
 	
 	@RequestMapping("/logout")

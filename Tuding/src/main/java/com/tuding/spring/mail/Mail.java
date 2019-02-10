@@ -1,26 +1,27 @@
 package com.tuding.spring.mail;
 
 public class Mail {
-	private String tomamil;
+	private String tomail;
 	private String title;
 	private String content;
 	
 	public Mail() {
 	}
 	
-	public Mail(String tomamil, String title, String content) {
-		this.tomamil = tomamil;
+	public Mail(String tomail, String title, String content) {
+		this.tomail = tomail;
 		this.title = title;
 		this.content = content;
 	}
 	
-	public final String getTomamil() {
-		return tomamil;
+	public final String getTomail() {
+		return tomail;
 	}
-	public final void setTomamil(String tomamil) {
-		this.tomamil = tomamil;
+
+	public final void setTomail(String tomail) {
+		this.tomail = tomail;
 	}
-	
+
 	public final String getTitle() {
 		return title;
 	}
@@ -37,6 +38,6 @@ public class Mail {
 	
 	@Override
 	public String toString() {
-		return "Mail [tomamil=" + tomamil + ", title=" + title + ", content=" + content + "]";
+		return "Mail [tomail=" + tomail + ", title=" + title + ", content=" + content + "]";
 	}
 }

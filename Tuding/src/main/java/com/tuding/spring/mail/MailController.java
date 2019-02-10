@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.tuding.spring.sha256.SHA256;
+
 @Controller
 @RequestMapping("/mail")
 public class MailController {
@@ -15,19 +17,16 @@ public class MailController {
 	@Autowired
 	private JavaMailSender mailSender;
 
-	@RequestMapping("/mail/sendForm")
-	public String mailSendForm(Mail m) {
-
-		return "mail/mailSendForm";
-	}
-
 	@RequestMapping("/sending")
 	public String mailSending(Mail m) {
+		
+		System.out.println(m.getTomail());
 
-		String setfrom = "아이디@gmail.com";         
-		String tomail  = m.getTomamil();    // 받는 사람 이메일
+		String setfrom = "balrog960712@gmail.com";         
+		String tomail  = m.getTomail();    // 받는 사람 이메일
 		String title   = m.getTitle();   // 제목
-		String content = m.getContent();    // 내용
+		String content = "다음 링크에 접속하여 인증을 진행하세요." +
+			"<a href='http://127.0.0.1/spring/member/mailCheck?code=" + new SHA256().getSHA256(tomail) + "'>인증하기</a>";    // 내용
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
@@ -37,13 +36,16 @@ public class MailController {
 			messageHelper.setFrom(setfrom);
 			messageHelper.setTo(tomail);
 			messageHelper.setSubject(title);
-			messageHelper.setText(content);
+			messageHelper.setText(new StringBuffer().append("다음 링크에 접속하여 인증을 진행하세요.")
+							.append("<a href='http://127.0.0.1/spring/member/mailCheck?code=")
+							.append(new SHA256().getSHA256(tomail))
+							.append("' target='_blenk'>인증 하기</a>").toString(), true);
 			
 			mailSender.send(message);
 		} catch(Exception e) {
 			System.out.println(e);
 		}
 
-		return "redirect:/member/home";
+		return "mail/mailSended";
 	}
 }

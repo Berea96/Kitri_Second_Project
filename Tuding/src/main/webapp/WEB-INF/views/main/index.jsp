@@ -125,6 +125,9 @@ footer {
   						if(result.result == "fail") {
   							alert("아이디, 비밀번호를 확인해주세요.");
   						}
+  						else if(result.result == "unChecked") {
+  							alert("인증이 필요합니다.");
+  						}
   						else {
   							location.href = "${pageContext.request.contextPath}/member/goNode";
   						}
@@ -201,7 +204,6 @@ footer {
 			</c:choose>
 		</div>
 	</div>
-
 
 	<footer class="container-fluid text-center">
 		<p>KITRI 디지털 컨버젼스 28기</p>
