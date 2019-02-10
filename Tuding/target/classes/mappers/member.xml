@@ -57,7 +57,7 @@
 	</update>
 	
 	<delete id="delete" parameterType="String">
-		delete frop member where id=#{id}
+		delete from member where id=#{id}
 	</delete>
 
 </mapper>

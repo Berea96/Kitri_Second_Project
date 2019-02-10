@@ -135,8 +135,8 @@ public class MemberController {
 		
 		Member getMember = service.getMember(m.getId());
 		if(getMember != null) {
-			m.setTemp_pw(tempPass);
-			service.editTempPass(m);
+			m.setPwd(tempPass);
+			service.editMember(m);
 			
 			model.addAttribute("member", getMember);
 			

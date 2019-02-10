@@ -20,9 +20,19 @@ public class LikedController {
 	@RequestMapping("/add")
 	public String addLiked(Liked l) {
 		
-		service.addLiked(l);
+		String result = "";
+		ArrayList<Liked> liked = service.getByBoardNum(l);
 		
-		return "{'result':'success'}";
+		if(liked.size() == 0) {
+			service.addLiked(l);
+			result = "{'result':'success'}";
+		}
+		else {
+			result = "{'result':'fail'}";
+		}
+		
+		
+		return result;
 	}
 	
 	@RequestMapping("/likeBoardNum")

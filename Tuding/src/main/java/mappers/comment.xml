@@ -34,7 +34,7 @@
 	</update>
 	
 	<delete id="delete" parameterType="int">
-		delete board_comment where num=#{num}
+		delete from board_comment where num=#{num}
 	</delete>
 
 </mapper>

@@ -26,7 +26,7 @@
 	</update>
 	
 	<delete id="delete" parameterType="String">
-		delete room where roomname=#{roomname}
+		delete from room where roomname=#{roomname}
 	</delete>
 
 </mapper>

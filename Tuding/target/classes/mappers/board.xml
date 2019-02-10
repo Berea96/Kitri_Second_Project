@@ -51,7 +51,7 @@
 	</select>
 	
 	<update id="updateLike" parameterType="int">
-		update board set likecount=likecount+#{count} where num=#{num}
+		update board set likecount=likecount+#{param2} where num=#{param1}
 	</update>
 	
 	<update id="update" parameterType="com.tuding.spring.board.Board">

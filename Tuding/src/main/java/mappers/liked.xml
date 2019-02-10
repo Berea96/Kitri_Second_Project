@@ -11,7 +11,7 @@
 	</resultMap>
 	
 	<insert id="insert" parameterType="com.tuding.spring.liked.Liked">
-		insert into liked values(seq_liked_num, #{id}, #{board_num})
+		insert into liked values(0, #{id}, #{board_num})
 	</insert>
 	
 	<select id="selectByBoardNum" 
@@ -26,7 +26,7 @@
 	</select>
 	
 	<delete id="delete" parameterType="com.tuding.spring.liked.Liked">
-		delete liked where id=#{id} and board_num=#{board_num}
+		delete from liked where id=#{id} and board_num=#{board_num}
 	</delete>
 
 

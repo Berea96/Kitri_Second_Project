@@ -138,6 +138,16 @@ public class BoardController {
 
 	//board edit Method
 	@ResponseBody
+	@RequestMapping("/like")
+	public String likeBoard(@RequestParam("num")int num) {
+		
+		service.likeBoard(num, 1);
+		
+		return "{'result':'success'}";
+	}
+	
+	//board edit Method
+	@ResponseBody
 	@RequestMapping("/edit")
 	public String editBoard(Board b) {
 

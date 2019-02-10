@@ -23,6 +23,7 @@
 		height: 50px;
 	}
 	.commentForm > div:first-child {
+		clear: both;
 	}
 	.commentForm > div:nth-child(2) {
 		width: 200px;
@@ -42,6 +43,17 @@
 	.commentForm > div:nth-child(5) > button {
 		width: 50px;
 		height: 25px;
+	}
+	.navbar {
+		margin-bottom: 0;
+		border-radius: 0;
+	}
+	
+	/* Add a gray background color and some padding to the footer */
+	footer {
+		clear:both;
+		background-color: #f2f2f2;
+		padding: 25px;
 	}
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -339,17 +351,40 @@
 					str += "<div>" + item.w_date + "</div>";
 					str += "<div>" + item.writer + "</div>";
 					if(item.writer == '${sessionScope.loginInfo.id}'){
-						str += "<div><button class='commentDelButton'>삭제</button></div>";
+						str += "<div><button val='" + item.num + "' class='commentDelButton'>삭제</button></div>";
 					}
 				str += "</div>";
 				});
 				
 				$("#commentList").append(str);
+				
+				$(".commentDelButton").click((e) => {
+					var comment_num = $(e.target).attr("val");
+					$.ajax({
+						type: "GET",
+						url: "${pageContext.request.contextPath}/comment/del",
+						data: {
+							"num": comment_num
+						},
+						success: (data) => {
+							var result = eval('(' + data + ')');
+							$.showCommentList(num);
+						}
+					});
+				});
 			}
 		});
 	}
 	
 	$(document).ready(() => {
+		$(() => {
+			var sessionId = "${sessionScope.loginInfo.id}";
+			console.log(sessionId);
+			if(sessionId == "") {
+				alert("로그인이 필요합니다.");
+				window.close();
+			}
+		})
 		$(() => {
 			$.ajax({
 				type: "GET",
@@ -421,6 +456,37 @@
 						}
 					})
 			}
+		});
+		$("#likeButton").click(() => {
+			var num = $("#detailBoardNum").html();
+			var originLike = Number($("#detailLiked").html());
+			$.ajax({
+				type: "GET",
+				url: "${pageContext.request.contextPath}/liked/add",
+				data: {
+					"board_num": num,
+					"id": "${sessionScope.loginInfo.id}"
+				},
+				success: (data) => {
+					var result = eval('('+data+')');
+					if(result.result == 'success') {
+						$.ajax({
+							type: "GET",
+							url: "${pageContext.request.contextPath}/board/like",
+							data: {
+								"num": num,
+								"id": "${sessionScope.loginInfo.id}"
+							},
+							success: (data) => {
+								$("#detailLiked").html(originLike + 1);
+							}
+						});
+					}
+					else {
+						alert("이미 좋아요를 눌렀습니다.")
+					}
+				}
+			});
 		});
 	});
 </script>
@@ -556,7 +622,7 @@
 			</tr>
 			<tr height='20px'>
 				<td>좋아요</td>
-				<td><img class="btn-img" src="${pageContext.request.contextPath}/resources/img/like2.jpg"  width="20" height="20" /></td>
+				<td><input id="likeButton" type="image" src="${pageContext.request.contextPath}/resources/img/like2.jpg" width="20px"></td>
 			</tr>
     	</table>
     	<h4>댓글</h4>
@@ -572,5 +638,9 @@
 		</div>
 		<div id="commentList" style="display:none;">
 		</div>
+		
+	<footer class="container-fluid text-center">
+		<p>KITRI 디지털 컨버젼스 28기</p>
+	</footer>
 </body>
 </html>
